@@ -1,0 +1,17 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --teal: #0d9488;
+  --teal-dark: #0c6e6e;
+  --navy: #1a2e44;
+  --cream: #f0fafa;
+  --border: #b2dfdb;
+  --text: #1a2e44;
+  --text-muted: #4a7a78;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+}
