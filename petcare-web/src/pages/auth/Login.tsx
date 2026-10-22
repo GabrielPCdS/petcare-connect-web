@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import AuthCard from '../../components/AuthCard';
 import { authApi } from '../../api/auth';
 import { getErro } from '../../api/http';
-import { salvarSessao } from '../../api/session';
+import { useAuth } from '../../contexts/AuthContext';
 import type { Mensagem, Perfil } from '../../types';
 
 const DESTINO: Record<Perfil, string | null> = {
@@ -14,11 +14,17 @@ const DESTINO: Record<Perfil, string | null> = {
 
 export default function Login() {
   const navigate = useNavigate();
+  const { usuario, entrar } = useAuth();
   const [perfil, setPerfil] = useState<Perfil>('Veterinario');
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
   const [msg, setMsg] = useState<Mensagem | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Quem já está logado vai direto ao painel (fica depois dos hooks)
+  if (usuario && DESTINO[usuario.perfil]) {
+    return <Navigate to={DESTINO[usuario.perfil]!} replace />;
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -47,7 +53,7 @@ export default function Login() {
         return;
       }
 
-      salvarSessao(r.dados);
+      entrar(r.dados);
       navigate(destino);
     } catch (err) {
       setMsg({ tipo: 'error', texto: '❌ ' + getErro(err) });
