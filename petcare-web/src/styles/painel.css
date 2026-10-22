@@ -1,0 +1,16 @@
+.painel { min-height: 100vh; background: var(--cream); }
+.painel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 28px; background: #fff; border-bottom: 1px solid var(--border);
+}
+.painel-brand { display: flex; align-items: center; gap: 12px; }
+.painel-brand img { width: 40px; }
+.painel-brand strong { display: block; font-family: 'Sora', sans-serif; font-size: 1rem; }
+.painel-brand span { font-size: 0.8rem; color: var(--text-muted); }
+.painel-user { display: flex; align-items: center; gap: 14px; font-size: 0.9rem; font-weight: 600; }
+.painel-user button {
+  border: 1.5px solid var(--border); background: #fff; color: var(--teal-dark);
+  padding: 8px 16px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.painel-user button:hover { background: var(--cream); }
+.painel-main { max-width: 1200px; margin: 0 auto; padding: 28px; }
