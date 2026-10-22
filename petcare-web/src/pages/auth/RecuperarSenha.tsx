@@ -27,7 +27,10 @@ export default function RecuperarSenha() {
 
       if (r.sucesso) {
         setMsg({ tipo: 'success', texto: '✅ Identidade confirmada.' });
-        setTimeout(() => navigate(`/nova-senha?login=${encodeURIComponent(login.trim())}`), 1200);
+        setTimeout(
+          () => navigate('/nova-senha', { state: { login: login.trim(), token: r.dados.token } }),
+          1200
+        );
       } else {
         setMsg({ tipo: 'error', texto: '❌ ' + (r.mensagem ?? 'Dados não conferem.') });
       }
