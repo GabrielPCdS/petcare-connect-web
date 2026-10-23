@@ -2,7 +2,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
 import Login from './pages/auth/Login';
-import Cadastro from './pages/auth/Cadastro';
 import RecuperarSenha from './pages/auth/RecuperarSenha';
 import NovaSenha from './pages/auth/NovaSenha';
 import VeterinarioPage from './pages/veterinario/VeterinarioPage';
@@ -16,7 +15,6 @@ export default function App() {
         <Routes>
           {/* Públicas */}
           <Route path="/" element={<Login />} />
-          <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/recuperar-senha" element={<RecuperarSenha />} />
           <Route path="/nova-senha" element={<NovaSenha />} />
           <Route path="/nao-autorizado" element={<NaoAutorizado />} />
