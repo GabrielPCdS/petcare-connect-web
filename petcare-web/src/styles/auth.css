@@ -59,7 +59,7 @@
 .msg { margin-top: 18px; border-radius: 12px; padding: 12px 14px; font-size: 0.9rem; }
 .msg.error { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
 .msg.success { background: #ecfdf5; border: 1px solid #bbf7d0; color: #15803d; }
-.auth-links { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 0.85rem; }
+.auth-links { display: flex; justify-content: flex-end; margin-bottom: 20px; font-size: 0.85rem; }
 .auth-links a, .auth-back { color: var(--teal-dark); font-weight: 700; text-decoration: none; }
 .auth-links a:hover, .auth-back:hover { text-decoration: underline; }
 .auth-back { display: block; text-align: center; margin-top: 24px; font-size: 0.92rem; }

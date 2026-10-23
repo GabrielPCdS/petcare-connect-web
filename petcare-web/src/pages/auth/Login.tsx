@@ -89,7 +89,6 @@ export default function Login() {
         </div>
 
         <div className="auth-links">
-          <Link to="/cadastro">Cadastrar-se</Link>
           <Link to="/recuperar-senha">Esqueci minha senha</Link>
         </div>
 
