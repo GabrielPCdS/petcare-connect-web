@@ -56,3 +56,16 @@ export interface Aviso {
   id: number; titulo: string; texto: string; tipo: string;
   tutorId: number | null; petId: number | null; lido: boolean;
 }
+
+export interface Usuario {
+  id: number;
+  nome: string;
+  login: string;
+  perfil: Perfil;
+  email?: string;
+  telefone?: string;
+  endereco?: string;
+  convenioStatus?: string;
+  registro?: string;
+  ativo: boolean;
+}
