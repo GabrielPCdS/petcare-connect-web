@@ -3,12 +3,14 @@ import PainelLayout from '../../components/PainelLayout';
 import { useAdminData } from './useAdminData';
 import Inicio from './secoes/Inicio';
 import Usuarios from './secoes/Usuarios';
+import Pets from './secoes/Pets';
 
-type Aba = 'inicio' | 'usuarios';
+type Aba = 'inicio' | 'usuarios' | 'pets';
 
 const ABAS: { id: Aba; rotulo: string }[] = [
   { id: 'inicio', rotulo: '🏠 Início' },
   { id: 'usuarios', rotulo: '👤 Usuários' },
+  { id: 'pets', rotulo: '🐾 Pets' },
 ];
 
 export default function AdminPage() {
@@ -49,6 +51,8 @@ export default function AdminPage() {
         <>
           {aba === 'inicio' && <Inicio dados={dados} />}
           {aba === 'usuarios' && <Usuarios {...comuns} />}
+          {aba === 'pets' && <Pets {...comuns} />}
+          
         </>
       )}
 
