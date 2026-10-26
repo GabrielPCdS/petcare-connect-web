@@ -213,12 +213,14 @@ Como o `.env.production` usa `/api`, não é preciso alterar nada no código na 
 
 ## Repositórios relacionados
 
-- **App Mobile (Android):** _adicione o link do repositório_
-- **API (.NET):** _adicione o link do repositório_
+- **App Mobile (Android):** _https://github.com/luana-eloise/PetCareConnectMobile_
+- **API (.Java):** _..._
 
 ## Equipe
 
-- _Seu nome_
-- _Luana_ (sobrenome)
+- _Gabriel Pinheiro_
+- _Luana  Eloise_
+- _Karine Miranda_
+- _Yara Xavier_
 
 Projeto acadêmico.
