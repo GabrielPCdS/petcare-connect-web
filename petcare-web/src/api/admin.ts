@@ -1,6 +1,15 @@
 import { http } from './http';
 import type { ApiResponse, Perfil, Usuario } from '../types';
 
+export interface NovoPet {
+  nome: string;
+  tipo: string;
+  raca: string;
+  idade: number;
+  peso: number;
+  tutorId: number;
+}
+
 export interface NovoUsuario {
   nome: string;
   login: string;
@@ -30,4 +39,11 @@ export const adminApi = {
     http
       .patch<ApiResponse>(`/Usuarios/${id}/ativo`, ativo, { headers: { 'Content-Type': 'application/json' } })
       .then((r) => r.data),
+
+        criarPet: (body: NovoPet) =>
+    http.post<ApiResponse<number>>('/Pets', body).then((r) => r.data),
+
+  atualizarPet: (id: number, body: NovoPet) =>
+    http.patch<ApiResponse>(`/Pets/${id}`, body).then((r) => r.data),
 };
+
