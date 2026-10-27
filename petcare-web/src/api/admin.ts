@@ -1,15 +1,6 @@
 import { http } from './http';
 import type { ApiResponse, Perfil, Usuario } from '../types';
 
-export interface NovoPet {
-  nome: string;
-  tipo: string;
-  raca: string;
-  idade: number;
-  peso: number;
-  tutorId: number;
-}
-
 export interface NovoUsuario {
   nome: string;
   login: string;
@@ -24,7 +15,26 @@ export interface NovoUsuario {
 
 export type EdicaoUsuario = Partial<Omit<Usuario, 'id' | 'login' | 'perfil' | 'ativo'>>;
 
+export interface NovoPet {
+  nome: string;
+  tipo: string;
+  raca: string;
+  idade: number;
+  peso: number;
+  tutorId: number;
+}
+
+export interface CorpoAviso {
+  titulo: string;
+  texto: string;
+  tipo: string;
+  tutorId: number | null;
+  veterinarioId: number | null;
+  petId: number | null;
+}
+
 export const adminApi = {
+  // Usuários
   usuarios: (perfil?: Perfil) =>
     http.get<ApiResponse<Usuario[]>>('/Usuarios', { params: perfil ? { perfil } : undefined }).then((r) => r.data),
 
@@ -40,10 +50,20 @@ export const adminApi = {
       .patch<ApiResponse>(`/Usuarios/${id}/ativo`, ativo, { headers: { 'Content-Type': 'application/json' } })
       .then((r) => r.data),
 
-        criarPet: (body: NovoPet) =>
+  // Pets
+  criarPet: (body: NovoPet) =>
     http.post<ApiResponse<number>>('/Pets', body).then((r) => r.data),
 
   atualizarPet: (id: number, body: NovoPet) =>
     http.patch<ApiResponse>(`/Pets/${id}`, body).then((r) => r.data),
-};
 
+  // Avisos
+  criarAviso: (body: CorpoAviso) =>
+    http.post<ApiResponse<number>>('/Avisos', body).then((r) => r.data),
+
+  atualizarAviso: (id: number, body: CorpoAviso) =>
+    http.put<ApiResponse>(`/Avisos/${id}`, body).then((r) => r.data),
+
+  apagarAviso: (id: number) =>
+    http.delete<ApiResponse>(`/Avisos/${id}`).then((r) => r.data),
+};
