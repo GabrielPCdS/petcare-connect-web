@@ -33,10 +33,22 @@ export interface Mensagem {
   texto: string;
 }
 
+export interface Aviso {
+  id: number;
+  titulo: string;
+  texto: string;
+  tipo: string;
+  tutorId: number | null;
+  petId: number | null;
+  veterinarioId?: number | null;
+  lido: boolean;
+}
+
 export type StatusConsulta = 'Marcada' | 'Realizada' | 'Cancelada' | 'NaoCompareceu';
 
 export interface Pet {
   id: number; nome: string; tipo: string; raca?: string;
+  veterinarioId?: number | null;
   idade?: number; peso?: number; tutorId: number; tutorNome: string;
 }
 export interface Consulta {
