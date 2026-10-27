@@ -17,3 +17,11 @@ export function timestamp(data: string, hora: string): number {
   const t = new Date(a, m - 1, d, h || 0, min || 0).getTime();
   return Number.isNaN(t) ? Number.MAX_SAFE_INTEGER : t;
 }
+
+export function amanhaIso(): string {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  const mes = String(d.getMonth() + 1).padStart(2, '0');
+  const dia = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${mes}-${dia}`;
+}
