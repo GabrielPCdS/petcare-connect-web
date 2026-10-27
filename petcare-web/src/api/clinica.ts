@@ -11,6 +11,17 @@ export const clinicaApi = {
   atualizarStatus: (id: number, status: StatusConsulta, obs = '') =>
     http.patch<ApiResponse>(`/Consultas/${id}/status`, null, { params: { status, obs } }).then((r) => r.data),
 
+    criarConsulta: (body: { petId: number; veterinarioId: number; data: string; hora: string; observacoes?: string }) =>
+    http.post<ApiResponse<number>>('/Consultas', body).then((r) => r.data),
+
+  cancelarConsulta: (id: number) =>
+    http.post<ApiResponse>(`/Consultas/${id}/cancelar`).then((r) => r.data),
+
+  horariosDisponiveis: (veterinarioId: number, data: string) =>
+    http
+      .get<ApiResponse<string[]>>('/Consultas/horarios-disponiveis', { params: { veterinarioId, data } })
+      .then((r) => r.data),
+
   vacinas: (petId: number) => get<Vacina[]>(`/Vacinas/${petId}`),
   criarVacina: (body: { petId: number; nome: string; dataAplicacao: string; observacao: string; aplicada: boolean }) =>
     http.post<ApiResponse<number>>('/Vacinas', body).then((r) => r.data),
