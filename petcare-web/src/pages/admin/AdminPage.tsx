@@ -4,13 +4,20 @@ import { useAdminData } from './useAdminData';
 import Inicio from './secoes/Inicio';
 import Usuarios from './secoes/Usuarios';
 import Pets from './secoes/Pets';
+import Consultas from './secoes/Consultas';
+import Relatorios from './secoes/Relatorios';
+import Avisos from './secoes/Avisos';
 
-type Aba = 'inicio' | 'usuarios' | 'pets';
+
+type Aba = 'inicio' | 'usuarios' | 'pets' | 'consultas' | 'relatorios' | 'avisos';
 
 const ABAS: { id: Aba; rotulo: string }[] = [
   { id: 'inicio', rotulo: '🏠 Início' },
   { id: 'usuarios', rotulo: '👤 Usuários' },
   { id: 'pets', rotulo: '🐾 Pets' },
+  { id: 'consultas', rotulo: '📅 Consultas' },
+  { id: 'relatorios', rotulo: '📄 Relatórios' },
+  { id: 'avisos', rotulo: '📢 Avisos' },
 ];
 
 export default function AdminPage() {
@@ -52,6 +59,9 @@ export default function AdminPage() {
           {aba === 'inicio' && <Inicio dados={dados} />}
           {aba === 'usuarios' && <Usuarios {...comuns} />}
           {aba === 'pets' && <Pets {...comuns} />}
+          {aba === 'consultas' && <Consultas {...comuns} />}
+          {aba === 'relatorios' && <Relatorios dados={dados} />}
+          {aba === 'avisos' && <Avisos {...comuns} />}  
           
         </>
       )}
