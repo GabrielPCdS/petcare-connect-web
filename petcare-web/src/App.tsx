@@ -8,9 +8,11 @@ import VeterinarioPage from './pages/veterinario/VeterinarioPage';
 import AdminPage from './pages/admin/AdminPage';
 import NaoAutorizado from './pages/NaoAutorizado';
 
+const MODO_EXEMPLO = import.meta.env.VITE_USE_MOCK === 'true';
 export default function App() {
   return (
     <AuthProvider>
+      {MODO_EXEMPLO && <div className="mock-banner">MODO DE EXEMPLO · dados fictícios</div>}
       <BrowserRouter>
         <Routes>
           {/* Públicas */}
