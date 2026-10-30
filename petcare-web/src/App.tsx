@@ -9,27 +9,35 @@ import AdminPage from './pages/admin/AdminPage';
 import NaoAutorizado from './pages/NaoAutorizado';
 
 const MODO_EXEMPLO = import.meta.env.VITE_USE_MOCK === 'true';
+
 export default function App() {
   return (
     <AuthProvider>
       {MODO_EXEMPLO && <div className="mock-banner">MODO DE EXEMPLO · dados fictícios</div>}
       <BrowserRouter>
         <Routes>
-          {/* Públicas */}
           <Route path="/" element={<Login />} />
           <Route path="/recuperar-senha" element={<RecuperarSenha />} />
           <Route path="/nova-senha" element={<NovaSenha />} />
           <Route path="/nao-autorizado" element={<NaoAutorizado />} />
 
-          {/* Só Veterinário */}
-          <Route element={<ProtectedRoute perfis={['Veterinario']} />}>
-            <Route path="/veterinario" element={<VeterinarioPage />} />
-          </Route>
+          <Route
+            path="/veterinario"
+            element={
+              <ProtectedRoute perfis={['Veterinario']}>
+                <VeterinarioPage />
+              </ProtectedRoute>
+            }
+          />
 
-          {/* Só Admin */}
-          <Route element={<ProtectedRoute perfis={['Admin']} />}>
-            <Route path="/admin" element={<AdminPage />} />
-          </Route>
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute perfis={['Admin']}>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
