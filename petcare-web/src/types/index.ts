@@ -20,14 +20,6 @@ export interface LoginResponse {
   perfil: Perfil;
 }
 
-export interface CadastroRequest {
-  nome: string;
-  login: string;
-  email: string;
-  senha: string;
-  perfil: 'Tutor';
-}
-
 export interface Mensagem {
   tipo: 'error' | 'success';
   texto: string;

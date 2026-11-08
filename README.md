@@ -18,25 +18,25 @@ O PetCare Connect é um sistema de gestão para clínicas veterinárias dividido
 | Parte | Quem usa | Tecnologia | Repositório |
 |---|---|---|---|
 | **Portal Web** (este repositório) | Veterinário e Admin | React + TypeScript + Vite | este |
-| **App Mobile** | Tutor | Android (Java, Retrofit) | _link do repositório do app_ |
-| **API** | Os dois acima | Java 21 + Spring Boot + PostgreSQL | _link do repositório da API_ |
+| **App Mobile** | Tutor | Android (Java, Retrofit) | [PetCareConnectMobile](https://github.com/luana-eloise/PetCareConnectMobile) |
+| **API** | Os dois acima | Java 21 + Spring Boot + PostgreSQL | [petcare-api](https://github.com/GabrielPCdS/petcare-api) |
 
 Regra de produto: **o tutor usa só o app** e **o web é só para Veterinário e Admin**. Se um tutor tentar entrar no portal, o sistema o orienta a usar o aplicativo.
 
 ```
         Banco de dados (PostgreSQL)
                  ↑
-          API Spring Boot  (/api, porta 5000)
+          API Spring Boot  (local: /api, porta 5000)
           ↑              ↑
    Portal Web        App Android
    (este repo)       (Retrofit)
 ```
 
-Em produção, o build do React é servido pela própria API (pasta `static` do Spring), então site e API ficam na mesma URL e o front chama `/api` de forma relativa.
+Em produção, o frontend chama a API hospedada no Render em `https://petcare-api-5e89.onrender.com/api/`, configurada em `petcare-web/.env.production`.
 
 ## Estado atual
 
-O front está **funcionalmente completo** para o escopo definido e passou no roteiro de testes com o modo de exemplo (dados fictícios, sem backend). O que falta é conferência contra a API real, acabamento e deploy. Veja o [Roadmap](#roadmap-e-pendências).
+O front está **funcionalmente completo** para o escopo definido e passou por testes ponta a ponta contra a API do Render nos perfis Admin e Veterinário, incluindo permissões, usuários, consultas, vacina, histórico, relatório e avisos. Login e painel Admin também foram verificados em viewport móvel; falta conferir o painel do Veterinário nesse formato e publicar as alterações pendentes. Veja o [Roadmap](#roadmap-e-pendências).
 
 ## Funcionalidades
 
@@ -86,7 +86,7 @@ O front está **funcionalmente completo** para o escopo definido e passou no rot
 O repositório tem o projeto dentro da subpasta `petcare-web/`. **Todos os comandos do npm rodam dentro dela.**
 
 ```bash
-git clone https://github.com/SEU-USUARIO/petcare-connect-web.git
+git clone https://github.com/GabrielPCdS/petcare-connect-web.git
 cd petcare-connect-web/petcare-web
 npm install
 ```
@@ -155,7 +155,7 @@ Roda a checagem de tipos do TypeScript (`tsc -b`) e depois o `vite build`. A sa�
 | Arquivo | Variável | Valor | Versionado |
 |---|---|---|---|
 | `.env.development` | `VITE_API_URL` | `http://localhost:5000/api` | sim |
-| `.env.production` | `VITE_API_URL` | `/api` | sim |
+| `.env.production` | `VITE_API_URL` | `https://petcare-api-5e89.onrender.com/api/` | sim |
 | `.env.development.local` | `VITE_USE_MOCK` | `true` para o modo de exemplo | **não** |
 
 Nunca coloque segredos (chaves, senhas) nesses arquivos.
@@ -294,16 +294,14 @@ O front **não** chama `/Admin/estatisticas`: os totais do painel admin são cal
 
 ## Deploy
 
-Hospedagem planejada: **Render** (Docker) para a aplicação e **Neon** (PostgreSQL) para o banco.
+Hospedagem: **Render** para a API e **Neon** (PostgreSQL) para o banco.
 
-1. O **Dockerfile fica no repositório da API** e é multi-stage: (1) clona **este** repositório e roda `npm ci && npm run build` em `petcare-web/`; (2) copia o `dist/` para `src/main/resources/static`; (3) compila o Spring Boot; (4) gera a imagem final.
-2. O Spring devolve o `index.html` para as rotas do React (`/`, `/admin`, `/veterinario`, `/recuperar-senha`, `/nova-senha`, `/nao-autorizado`) e serve `/assets/*` como arquivos estáticos.
-3. Variáveis de ambiente da API: `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET` e `CORS_ORIGINS`. **Nunca** coloque esses valores no repositório.
-4. No Neon, a URL JDBC precisa de `?sslmode=require`.
-5. O Dockerfile clona o `main` deste repositório: **só entra no deploy o que estiver enviado ao GitHub**.
-6. Como o `.env.production` usa `VITE_API_URL=/api`, não é preciso alterar nada no código para publicar.
+1. A URL base da API usada pelo build de produção fica em `petcare-web/.env.production` e inclui `/api/`, prefixo das rotas do backend. Se mudar, gere e publique um novo build do frontend; em desenvolvimento, `petcare-web/.env.development` aponta para `http://localhost:5000/api`.
+2. Na API, configure `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET` e `CORS_ORIGINS` no Render. **Nunca** coloque esses valores no repositório.
+3. No Neon, a URL JDBC precisa de `?sslmode=require`.
+4. Após enviar as alterações ao GitHub, no serviço correspondente no Render, use **Manual Deploy → Clear build cache & deploy** para publicar com o cache limpo.
 
-Hospedagem gratuita costuma "dormir" por inatividade: abra o site uns 10 minutos antes de uma apresentação.
+O plano Free do Render suspende o serviço após um período sem tráfego. O primeiro acesso depois disso pode demorar bastante enquanto a API inicia novamente (cold start); aguarde a resposta ou tente de novo. Para demonstrações, abra o site com antecedência.
 
 ## Problemas comuns
 
@@ -311,7 +309,7 @@ Hospedagem gratuita costuma "dormir" por inatividade: abra o site uns 10 minutos
 |---|---|
 | `npm error Missing script: "dev"` | Você rodou fora da subpasta. Entre em `petcare-web` e rode de novo |
 | `npm run build` falha com erro `TS...` | O TypeScript é estrito. Leia a mensagem (arquivo e linha). Os mais comuns: import não usado (`TS6133`) e falta de `import type` |
-| Login mostra "Servidor offline" | A API não está rodando em `localhost:5000`, ou o `VITE_API_URL` está errado. Ou use o modo de exemplo |
+| Login mostra "Servidor offline" | A API não está disponível, ainda está iniciando após ficar inativa, ou o `VITE_API_URL` está errado. Aguarde o cold start do Render Free e tente de novo |
 | Erro de CORS no console | A API precisa liberar `http://localhost:5173` (`CORS_ORIGINS`) |
 | Cai no login depois de uma ação | A API respondeu 401 (token expirado ou inválido): o front desloga de propósito |
 | Dados estranhos ou mock ligado sem querer | Apague `.env.development.local` e reinicie, ou rode `petcareMockReset()` no console |
@@ -329,14 +327,14 @@ Hospedagem gratuita costuma "dormir" por inatividade: abra o site uns 10 minutos
 - [x] Modo de exemplo com todo o contrato e as regras de negócio
 
 **Pendente**
-- [ ] **Teste de ponta a ponta contra a API Java** (o mais importante)
-- [ ] Título e ícone da aba do navegador (`index.html` e `public/`)
-- [ ] Remover resíduos: `authApi.cadastro` em `src/api/auth.ts` e `CadastroRequest` em `src/types/index.ts`
-- [ ] Conferir responsividade em celular (cabeçalho do painel e barra de abas)
-- [ ] Rodar o lint (`npm run lint`, se o script existir)
+- [ ] Conferir responsividade do painel do Veterinário em celular
 - [ ] Deploy no Render + Neon
-- [ ] Preencher os links e a equipe deste README
 - [ ] Envio do link de redefinição de senha por e-mail
+
+**Validado**
+- [x] Testes ponta a ponta contra a API de produção nos perfis Admin e Veterinário
+- [x] Responsividade móvel do login e do painel Admin, sem rolagem horizontal
+- [x] `npm run lint` e `npm run build` (o lint mantém três warnings preexistentes)
 
 **Opcional**
 - [ ] Trocar `window.confirm` por um modal próprio (o componente `Modal` já existe)
